@@ -8,6 +8,9 @@
 #include <unordered_set>
 #include <string>
 #include <cstring>
+#include <queue>
+
+typedef long long ll;
 
 using namespace std;
 
@@ -18,11 +21,8 @@ int G[N];
 bool vis[N];
 bool cycle[N];
 int ans[N];
-int scc_index[N];
+bool scc_vis[N];
 vector<int> inc_finish;
-vector<vector<int>> scc_nodes;
-vector<int> scc_edge;
-vector<int> scc_vis;
 
 void dfs(int u) {
     vis[u] = true;
@@ -33,26 +33,20 @@ void dfs(int u) {
     inc_finish.push_back(u);
 }
 
-void dfs_transpose(int u, int j, vector<vector<int>>& transpose) {
+void dfs_transpose(int u, vector<int>& scc, vector<vector<int>>& transpose) {
     vis[u] = true;
     cycle[u] = true;
     for (int v : transpose[u]) {
-        if (cycle[v]) continue;
-        if (vis[v]) {
-            scc_edge[scc_index[v]] = j;
-            continue;
-        }
-        dfs_transpose(v, j, transpose);
+        if (cycle[v] || vis[v]) continue;
+        dfs_transpose(v, scc, transpose);
     }
-    scc_nodes[j].push_back(u);
-    scc_index[u] = j;
+    scc.push_back(u);
     cycle[u] = false;
 }
 
 void dfs_scc(int i) {
-    int j = scc_index[i];
-    if (scc_vis[j]) return;
-    scc_vis[j] = 1;
+    if (scc_vis[i]) return;
+    scc_vis[i] = true;
     dfs_scc(G[i]);
     ans[i] = ans[G[i]] + 1;
 }
@@ -74,17 +68,14 @@ int main() {
     memset(vis, 0, sizeof(vis));
     for (int i = n - 1; i >= 0; i--) {
         int u = inc_finish[i];
-        int j = scc_nodes.size();
+        vector<int> scc;
         if (!vis[u]) {
-            scc_nodes.push_back(vector<int>());
-            scc_vis.push_back(0);
-            scc_edge.push_back(-1);
-            dfs_transpose(u, j, transpose);
-            if (scc_nodes[j].size() != 1) {
-                for (int x : scc_nodes[j]) {
-                    ans[x] = scc_nodes[j].size();
+            dfs_transpose(u, scc, transpose);
+            if (scc.size() != 1) {
+                for (int x : scc) {
+                    ans[x] = scc.size();
+                    scc_vis[x] = true;
                 }
-                scc_vis[j] = 1;
             }
         }
     }
