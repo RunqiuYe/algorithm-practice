@@ -1,19 +1,18 @@
-// https://cses.fi/problemset/task/1682/
-
 #include <iostream>
 #include <cstring>
 #include <string>
 #include <vector>
-
+ 
 using namespace std;
-
+ 
 const int N = 1e5 + 5;
 int n, m;
 vector<int> G[N];
 vector<int> transpose[N];
 vector<int> inc_finish;
-vector<int> scc;
+vector<vector<int>> kingdoms;
 bool vis[N];
+int group[N];
 
 void dfs(int x) {
     if (vis[x]) return;
@@ -23,16 +22,16 @@ void dfs(int x) {
     }
     inc_finish.push_back(x);
 }
-
-void dfs_transpose(int x) {
+ 
+void dfs_transpose(int x, vector<int>& scc) {
     if (vis[x]) return;
     vis[x] = true;
     scc.push_back(x);
     for (int v : transpose[x]) {
-        dfs_transpose(v);
+        dfs_transpose(v, scc);
     }
 }
-
+ 
 int main() {
     scanf("%d %d", &n, &m);
     for (int i = 0; i < m; i++) {
@@ -47,19 +46,23 @@ int main() {
         }
     }
     memset(vis, 0, sizeof(vis));
-    dfs_transpose(inc_finish[n - 1]);
-    if (scc.size() == n) {
-        printf("YES\n");
-        return 0;
-    }
-    printf("NO\n");
-    int v = 0;
-    for (int i = 1; i <= n; i++) {
-        if (!vis[i]) {
-            v = i;
-            break;
+    for (int i = n - 1; i >= 0; i--) {
+        vector<int> scc;
+        dfs_transpose(inc_finish[i], scc);
+        if (scc.size() != 0) {
+            kingdoms.push_back(scc);
         }
     }
-    printf("%d %d\n", v, scc[0]);
+    int k = kingdoms.size();
+    printf("%d\n", k);
+    for (int j = 0; j < k; j++) {
+        for (int x : kingdoms[j]) {
+            group[x] = j + 1;
+        }
+    }
+    for (int i = 1; i <= n; i++) {
+        printf("%d ", group[i]);
+    }
+    printf("\n");
     return 0;
 }
