@@ -30,8 +30,8 @@ void dfs(int u) {
         G[u].erase(iter);
         G[v].erase(u);
         dfs(v);
-        path.push_back(u);
     }
+    path.push_back(u);
 }
 
 int main() {
@@ -54,7 +54,7 @@ int main() {
     int k = path.size();
 
     // graph is not connected
-    if (k != m) {
+    if (k != m + 1) {
         printf("IMPOSSIBLE\n");
         return 0;
     }
@@ -62,6 +62,5 @@ int main() {
     for (int i = k - 1; i >= 0; i--) {
         printf("%d ", path[i]);
     }
-    printf("1\n");
     return 0;
 }
