@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/result/13567081/
+// https://cses.fi/problemset/task/1692
 
 #include <cstring>
 #include <iostream>
