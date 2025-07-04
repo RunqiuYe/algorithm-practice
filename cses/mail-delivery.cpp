@@ -22,7 +22,7 @@ int deg[N];
 vector<int> path;
 bool cycle[N];
 
-// Hierholzer algorithm for Euler's ring
+// Hierholzer algorithm for Eulerian ring
 void dfs(int u) {
     while (G[u].size() != 0) {
         auto iter = G[u].begin();
