@@ -1,8 +1,10 @@
 // https://leetcode.com/problems/subsets/
 
+#include <algorithm>
 #include <cstring>
 #include <deque>
 #include <iostream>
+#include <map>
 #include <string>
 #include <vector>
 
