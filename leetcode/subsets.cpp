@@ -20,12 +20,15 @@ class Solution {
         function<void(int)> dfs = [&](int i) {
             if (i == n) {
                 res.push_back(st);
-            } else {
-                dfs(i + 1);
-                st.push_back(nums[i]);
-                dfs(i + 1);
-                st.pop_back();
+                return;
             }
+            // skip this element
+            dfs(i + 1);
+
+            // take this element
+            st.push_back(nums[i]);
+            dfs(i + 1);
+            st.pop_back();
         };
 
         dfs(0);
