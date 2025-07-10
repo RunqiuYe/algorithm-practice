@@ -1,10 +1,10 @@
 // https://cses.fi/problemset/task/3221
 
-#include <iostream>
 #include <cstring>
+#include <deque>
+#include <iostream>
 #include <string>
 #include <vector>
-#include <deque>
 
 typedef long long ll;
 
@@ -19,7 +19,7 @@ int main() {
     deque<pair<ll, int>> window = {};
 
     for (int i = 1; i < k; i++) {
-        while (window.size() != 0 && window[window.size() - 1].first >= x) {
+        while (window.size() != 0 && window.back().first >= x) {
             window.pop_back();
         }
         window.push_back({x, i});
@@ -27,7 +27,7 @@ int main() {
     }
     ll res = 0LL;
     for (int i = k; i <= n; i++) {
-        while (window.size() != 0 && window[window.size() - 1].first >= x) {
+        while (window.size() != 0 && window.back().first >= x) {
             window.pop_back();
         }
         window.push_back({x, i});
