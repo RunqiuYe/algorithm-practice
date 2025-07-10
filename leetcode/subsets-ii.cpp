@@ -21,16 +21,19 @@ class Solution {
         function<void(int)> dfs = [&](int i) {
             if (i == n) {
                 res.push_back(st);
-            } else {
-                st.push_back(nums[i]);
-                dfs(i + 1);
-                st.pop_back();
-                i++;
-                while (i < n && nums[i] == nums[i - 1]) {
-                    i++;
-                }
-                dfs(i);
+                return;
             }
+            // take this element
+            st.push_back(nums[i]);
+            dfs(i + 1);
+            st.pop_back();
+
+            // if skipping this element, skip every instance
+            i++;
+            while (i < n && nums[i] == nums[i - 1]) {
+                i++;
+            }
+            dfs(i);
         };
 
         dfs(0);
