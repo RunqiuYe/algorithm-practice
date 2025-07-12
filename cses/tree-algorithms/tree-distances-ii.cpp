@@ -19,7 +19,6 @@ using namespace std;
 
 const int N = 2e5 + 5;
 vector<int> G[N];
-vector<ll> branch_dist[N];
 int size[N];
 ll dist[N];
 ll ans[N];
