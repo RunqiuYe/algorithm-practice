@@ -1,10 +1,12 @@
-#include <iostream>
+// https://cses.fi/problemset/task/1683
+
 #include <cstring>
+#include <iostream>
 #include <string>
 #include <vector>
- 
+
 using namespace std;
- 
+
 const int N = 1e5 + 5;
 int n, m;
 vector<int> G[N];
@@ -22,7 +24,7 @@ void dfs(int x) {
     }
     inc_finish.push_back(x);
 }
- 
+
 void dfs_transpose(int x, vector<int>& scc) {
     if (vis[x]) return;
     vis[x] = true;
@@ -31,7 +33,7 @@ void dfs_transpose(int x, vector<int>& scc) {
         dfs_transpose(v, scc);
     }
 }
- 
+
 int main() {
     scanf("%d %d", &n, &m);
     for (int i = 0; i < m; i++) {
