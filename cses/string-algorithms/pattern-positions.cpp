@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/2102
+// https://cses.fi/problemset/task/2104
 
 #include <algorithm>
 #include <array>
@@ -21,23 +21,25 @@ const int K = 26;
 const int N = 5e5 + 5;
 const int M = 5e5 + 5;
 const int SIZE = 5e5 + 5;
+const int INF = 0x3f3f3f3f;
 
 struct Node {
     int son[K];  // index for transition
     int fail;    // fail pointer
-    int mark;    // time visited this node
+    int mark;    // fist position to visit this node
 
     void init() {
         fill(son, son + K, 0);
         fail = 0;
-        mark = 0;
+        mark = INF;
     }
 };
 
 Node tr[SIZE];                // Aho-Corasick Automaton
 vector<int> fail_tree[SIZE];  // fail tree for DFS
-int mark[SIZE];               // time visited each node
+int mark[SIZE];               // first position to visit each node
 int idx[M];                   // accept index for each pattern
+int len[M];                   // length of each pattern
 int tot = 0;                  // total number of nodes
 
 int k;
@@ -57,6 +59,7 @@ void insert(string pattern, int j) {
         }
         u = v;
     }
+    len[j] = m;
     idx[j] = u;
 }
 
@@ -95,7 +98,7 @@ void query(string text) {
     int u = 0;
     for (int i = 0; i < n; i++) {
         u = tr[u].son[text[i] - 'a'];
-        tr[u].mark++;
+        tr[u].mark = min(tr[u].mark, i + 1);
     }
 }
 
@@ -103,7 +106,7 @@ void query(string text) {
 void dfs(int u) {
     for (int v : fail_tree[u]) {
         dfs(v);
-        tr[u].mark += tr[v].mark;
+        tr[u].mark = min(tr[v].mark, tr[u].mark);
     }
     mark[u] = tr[u].mark;
 }
@@ -120,6 +123,6 @@ int main() {
     query(text);
     dfs(0);
     for (int i = 1; i <= k; i++) {
-        printf("%s\n", mark[idx[i]] != 0 ? "YES" : "NO");
+        printf("%d\n", mark[idx[i]] == INF ? -1 : mark[idx[i]] - len[i] + 1);
     }
 }
