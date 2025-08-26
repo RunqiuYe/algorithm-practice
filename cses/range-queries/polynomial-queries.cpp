@@ -22,44 +22,40 @@ int n, q;
 int a[N];
 int d[N];
 
-// segment tree for d[i]
-ll tree1[4 * N];
-ll mark1[4 * N];
-
-// segment tree for d[i] * i
-ll tree2[4 * N];
-ll mark2[4 * N];
+// segment tree for d[i] and d[i] * i
+ll tree[4 * N][2];
+ll mark[4 * N][2];
 
 // gives l + (l + 1) + ... + r
 ll f(int l, int r) { return ((ll)l + r) * ((ll)r - l + 1) / 2; }
 
 void pull(int p) {
-    tree1[p] = tree1[2 * p] + tree1[2 * p + 1];
-    tree2[p] = tree2[2 * p] + tree2[2 * p + 1];
+    tree[p][0] = tree[2 * p][0] + tree[2 * p + 1][0];
+    tree[p][1] = tree[2 * p][1] + tree[2 * p + 1][1];
 }
 
 void push(int p, int l, int r) {
     int mid = l + (r - l) / 2;
-    if (mark1[p] != 0) {
-        tree1[2 * p] += (mid - l + 1) * mark1[p];
-        tree1[2 * p + 1] += (r - mid) * mark1[p];
-        mark1[2 * p] += mark1[p];
-        mark1[2 * p + 1] += mark1[p];
-        mark1[p] = 0;
+    if (mark[p][0] != 0) {
+        tree[2 * p][0] += (mid - l + 1) * mark[p][0];
+        tree[2 * p + 1][0] += (r - mid) * mark[p][0];
+        mark[2 * p][0] += mark[p][0];
+        mark[2 * p + 1][0] += mark[p][0];
+        mark[p][0] = 0;
     }
-    if (mark2[p] != 0) {
-        tree2[2 * p] += f(l, mid) * mark2[p];
-        tree2[2 * p + 1] += f(mid + 1, r) * mark2[p];
-        mark2[2 * p] += mark2[p];
-        mark2[2 * p + 1] += mark2[p];
-        mark2[p] = 0;
+    if (mark[p][1] != 0) {
+        tree[2 * p][1] += f(l, mid) * mark[p][1];
+        tree[2 * p + 1][1] += f(mid + 1, r) * mark[p][1];
+        mark[2 * p][1] += mark[p][1];
+        mark[2 * p + 1][1] += mark[p][1];
+        mark[p][1] = 0;
     }
 }
 
 void build(int p, int l, int r) {
     if (l == r) {
-        tree1[p] = d[l];
-        tree2[p] = (ll)d[l] * l;
+        tree[p][0] = d[l];
+        tree[p][1] = (ll)d[l] * l;
         return;
     }
     int mid = l + (r - l) / 2;
@@ -70,10 +66,10 @@ void build(int p, int l, int r) {
 
 void update(int p, int l, int r, int L, int R, ll x) {
     if (L <= l && r <= R) {
-        tree1[p] += (r - l + 1) * x;
-        mark1[p]++;
-        tree2[p] += f(l, r) * x;
-        mark2[p]++;
+        tree[p][0] += (r - l + 1) * x;
+        mark[p][0]++;
+        tree[p][1] += f(l, r) * x;
+        mark[p][1]++;
         return;
     }
     push(p, l, r);
@@ -92,7 +88,7 @@ pair<ll, ll> query(int p, int l, int r, int L, int R) {
         return {0, 0};
     }
     if (L <= l && r <= R) {
-        return {tree1[p], tree2[p]};
+        return {tree[p][0], tree[p][1]};
     }
     push(p, l, r);
     pair<ll, ll> res = {0, 0};
