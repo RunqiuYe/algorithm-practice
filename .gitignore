@@ -1,9 +1,9 @@
 .DS_Store
 .vscode
-a.cpp
-a.py
-a.c
+?.cpp
+?.py
+?.c
 a.out
-a
+?
 input.txt
 output.txt
