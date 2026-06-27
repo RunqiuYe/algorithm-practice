@@ -42,7 +42,7 @@ void sieve() {
     }
 }
 
-// count the number of previously seen numbers that are comprime with x
+// count the number of previously seen numbers that are coprime with x
 void solve(int x) {
     vector<int> prime_factors;
     for (int p : primes) {
