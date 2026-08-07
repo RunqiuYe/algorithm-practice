@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -O2 -Wall
+CXXFLAGS = -std=c++11 -O2 -Wall -fsanitize=address,undefined -g
 TARGET = a
 SRC = a.cpp
 
