@@ -1,0 +1,7 @@
+CompileFlags:
+  Compiler: /opt/homebrew/opt/llvm/bin/clang++
+  Add:
+    - -std=c++11
+    - -O2
+    - -Wall 
+    - -fsanitize=address,undefined
