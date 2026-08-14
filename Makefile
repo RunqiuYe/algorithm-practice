@@ -1,12 +1,17 @@
 CXX = clang++
-CXXFLAGS = -std=c++11 -O2 -Wall -fsanitize=address,undefined -g
-TARGET = a
-SRC = a.cpp
+A_CXXFLAGS = -std=c++23 -O2 -Wall -fsanitize=address,undefined -g
+B_CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic -Wconversion -Wshadow \
+	-fsanitize=address,undefined -fno-omit-frame-pointer
 
-all: $(TARGET)
+all: a b
 
-$(TARGET): $(SRC)
-	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET)
+a: a.cpp
+	$(CXX) $(A_CXXFLAGS) $< -o $@
+
+b: b.cpp
+	$(CXX) $(B_CXXFLAGS) $< -o $@
 
 clean:
-	rm -f $(TARGET)
+	rm -f a b
+
+.PHONY: all clean
