@@ -1,2 +1,3 @@
 BasedOnStyle: LLVM
 BreakBeforeBinaryOperators: All
+PointerAlignment: Left
