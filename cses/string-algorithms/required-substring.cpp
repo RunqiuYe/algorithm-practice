@@ -88,5 +88,5 @@ int main() {
   for (int j = 0; j < m; j++) {
     res = (res + dp[n][j]) % MOD;
   }
-  printf("%lld\n", (exp(26, n) + MOD - res) % MOD);
+  cout << (exp(26, n) + MOD - res) % MOD << endl;
 }
