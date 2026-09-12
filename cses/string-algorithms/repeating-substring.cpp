@@ -30,8 +30,8 @@ string s;
 int n;
 
 int sa[N];
-int rk[N];
-int old_rk[N];
+int rk[2 * N];
+int old_rk[2 * N];
 int lca[N];
 
 int main() {
